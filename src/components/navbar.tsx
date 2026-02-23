@@ -28,8 +28,16 @@ export function SiteNavbar() {
   const navItems = [
     { label: "Home", to: "/" },
     { label: "Our Solution", to: "/solution" },
-    { label: "Who We Serve", to: "/who-we-serve" },
-    { label: "Company", to: "/company" },
+    {
+      label: "Who We Serve",
+      to: "/who-we-serve/banks",
+      dropdown: [
+        { label: "Fintechs", to: "/who-we-serve/fintechs" },
+        { label: "Credit Unions", to: "/who-we-serve/credit-unions" },
+        { label: "Banks", to: "/who-we-serve/banks" },
+      ],
+    },
+    { label: "About", to: "/about" },
     { label: "Developer", to: "/developer" },
   ];
 
@@ -79,9 +87,10 @@ export function SiteNavbar() {
 
       <NavbarContent justify="center" className="hidden md:flex flex-1 items-center justify-center gap-8 lg:gap-10 h-full">
         {navItems.map((item) => {
-          const active = pathname === item.to;
+          const active = pathname === item.to || (item.dropdown && item.dropdown.some((d) => d.to === pathname));
+          const hasDropdown = "dropdown" in item && Array.isArray(item.dropdown);
           return (
-            <NavbarItem key={item.to}>
+            <NavbarItem key={item.to} className="relative group">
               <HeroLink
                 as={RouteLink}
                 to={item.to}
@@ -92,7 +101,26 @@ export function SiteNavbar() {
                 }`}
               >
                 {item.label}
+                {hasDropdown && <Icon icon="lucide:chevron-down" className="ml-0.5 w-3 h-3 opacity-70" />}
               </HeroLink>
+              {hasDropdown && item.dropdown && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+                  <div className="rounded-xl border border-slate-200/80 bg-white/95 backdrop-blur-md shadow-lg py-1.5 min-w-[180px]">
+                    {item.dropdown.map((d) => (
+                      <HeroLink
+                        key={d.to}
+                        as={RouteLink}
+                        to={d.to}
+                        className={`block px-4 py-2 text-[11.5px] font-medium tracking-[-0.01em] ${
+                          pathname === d.to ? "text-primary bg-primary/5" : "text-slate-700 hover:bg-slate-50 hover:text-[var(--ink)]"
+                        }`}
+                      >
+                        {d.label}
+                      </HeroLink>
+                    ))}
+                  </div>
+                </div>
+              )}
             </NavbarItem>
           );
         })}

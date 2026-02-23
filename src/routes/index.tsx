@@ -3,9 +3,11 @@ import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 
 const Home = React.lazy(() => import("../pages/home"));
 const Solution = React.lazy(() => import("../pages/solution"));
-const WhoWeServe = React.lazy(() => import("../pages/who-we-serve"));
+const WhoWeServeBanks = React.lazy(() => import("../pages/who-we-serve/banks"));
+const WhoWeServeCreditUnions = React.lazy(() => import("../pages/who-we-serve/credit-unions"));
+const WhoWeServeFintechs = React.lazy(() => import("../pages/who-we-serve/fintechs"));
 const Developer = React.lazy(() => import("../pages/developer"));
-const Company = React.lazy(() => import("../pages/company"));
+const About = React.lazy(() => import("../pages/about"));
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -54,9 +56,13 @@ export function Routes() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/solution" component={Solution} />
-          <Route exact path="/who-we-serve" component={WhoWeServe} />
+          <Route exact path="/who-we-serve" render={() => <Redirect to="/who-we-serve/banks" />} />
+          <Route exact path="/who-we-serve/banks" component={WhoWeServeBanks} />
+          <Route exact path="/who-we-serve/credit-unions" component={WhoWeServeCreditUnions} />
+          <Route exact path="/who-we-serve/fintechs" component={WhoWeServeFintechs} />
           <Route exact path="/developer" component={Developer} />
-          <Route exact path="/company" component={Company} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/company" render={() => <Redirect to="/about" />} />
           <Redirect to="/" />
         </Switch>
       </React.Suspense>

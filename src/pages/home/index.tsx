@@ -77,9 +77,9 @@ function SegmentedCTA() {
   const [active, setActive] = React.useState<"fintechs" | "credit-unions" | "banks">("fintechs");
 
   const items = [
-    { key: "fintechs" as const, label: "Fintechs", to: "/who-we-serve?tab=fintechs", icon: "lucide:cpu" },
-    { key: "credit-unions" as const, label: "Credit Unions", to: "/who-we-serve?tab=credit-unions", icon: "lucide:landmark" },
-    { key: "banks" as const, label: "Banks", to: "/who-we-serve?tab=banks", icon: "lucide:building-2" },
+    { key: "fintechs" as const, label: "Fintechs", to: "/who-we-serve/fintechs", icon: "lucide:cpu" },
+    { key: "credit-unions" as const, label: "Credit Unions", to: "/who-we-serve/credit-unions", icon: "lucide:landmark" },
+    { key: "banks" as const, label: "Banks", to: "/who-we-serve/banks", icon: "lucide:building-2" },
   ];
 
   const idx = Math.max(0, items.findIndex((i) => i.key === active));
@@ -167,7 +167,7 @@ export default function Home() {
   const [heroCursorVisible, setHeroCursorVisible] = React.useState(false);
   const [heroCursorPressed, setHeroCursorPressed] = React.useState(false);
   // Hero headline: typewriter cycle on the key noun (elite “living system” feel).
-  const heroWordCycle = React.useMemo(() => ["epicenter", "HQ", "dashboard", "anchor"] as const, []);
+  const heroWordCycle = React.useMemo(() => ["epicenter", "control hub", "payment-on-file", "cross-sell engine"] as const, []);
   const [heroWordIdx, setHeroWordIdx] = React.useState(0);
   const [heroWordPos, setHeroWordPos] = React.useState(heroWordCycle[0].length);
   const [heroWordDel, setHeroWordDel] = React.useState(false);
@@ -207,8 +207,8 @@ export default function Home() {
     const cur = heroWordCycle[heroWordIdx];
     const doneTyping = !heroWordDel && heroWordPos >= cur.length;
     const doneDeleting = heroWordDel && heroWordPos <= 0;
-    const holdMs = doneTyping ? 1100 : doneDeleting ? 220 : 0;
-    const speedMs = heroWordDel ? 46 : 58;
+    const holdMs = doneTyping ? 1600 : doneDeleting ? 280 : 0;
+    const speedMs = 24;
 
     const t = window.setTimeout(() => {
       if (doneTyping) {
@@ -441,10 +441,11 @@ export default function Home() {
             >
               {/* Constrained column (Atomic-style): keep the hero copy in a precise stacked lane */}
               <div className="max-w-[520px] mx-auto lg:mx-0">
-              <h1 className="text-pretty max-w-[22ch] text-[clamp(2.18rem,4.35vw,3.75rem)] leading-[1.03] tracking-tighter font-semibold text-[var(--ink)]">
-                Turn your banking app into the{" "}
+              <h1 className="text-pretty text-[clamp(2.18rem,4.35vw,3.75rem)] leading-[1.03] tracking-tighter font-semibold text-[var(--ink)]">
+                Turn your banking app into the
+                <br />
                 <span className="relative inline-flex items-baseline font-semibold text-blue-700 whitespace-nowrap">
-                  <span className="relative inline-block min-w-[9.2ch]">
+                  <span className="relative inline-block w-[12ch] min-w-[12ch] max-w-[12ch] text-left whitespace-nowrap">
                     {heroWordCycle[heroWordIdx].slice(0, heroWordPos)}
                     <motion.span
                     aria-hidden="true"
@@ -812,11 +813,11 @@ export default function Home() {
                 <ClientLogoCarousel />
               </div>
             </div>
-              <div className="mt-6 flex items-center justify-center md:justify-end">
-                <p className="text-center md:text-right text-[13px] md:text-[14px] text-slate-500 max-w-2xl">
-              and 30+ other financial institutions
-            </p>
-          </div>
+              <div className="mt-6 flex items-center justify-center">
+                <p className="text-center text-[13px] md:text-[14px] text-slate-500 max-w-2xl">
+                  and 30+ other financial institutions
+                </p>
+              </div>
             </div>
             <motion.div
               className="mt-16 md:mt-[72px] lg:mt-[84px]"
@@ -865,10 +866,10 @@ export default function Home() {
 
             <p className="section-kicker mx-auto inline-block mb-3">Performance outcomes</p>
             <h3 className="text-[24px] md:text-[30px] lg:text-[38px] font-extrabold tracking-[-0.04em] text-[#0F172A] leading-tight max-w-3xl mx-auto">
-              Customers achieve <span className="text-blue-700">5x ROI</span> with modern bill management.
+              Customers achieve <span className="text-blue-700">5x ROI</span> with ScribeUp's bill management solutions.
             </h3>
             <p className="mt-4 text-[14px] md:text-[15px] text-[#64748B] font-medium leading-relaxed max-w-2xl mx-auto text-balance">
-              Drive measurable activation outcomes that reinforce your product as the primary financial home.
+              Drive measurable outcomes that reinforce your product as the primary financial home.
             </p>
           </motion.div>
 
@@ -1250,7 +1251,6 @@ export default function Home() {
                 <div className="mt-3 flex items-center gap-2 text-[11px] font-semibold text-slate-500">
                   <span className={`h-1.5 w-1.5 rounded-full ${paymentCopyIdx === 0 ? "bg-blue-600/65" : "bg-slate-300"}`} />
                   <span className={`h-1.5 w-1.5 rounded-full ${paymentCopyIdx === 1 ? "bg-emerald-600/60" : "bg-slate-300"}`} />
-                  <span className="ml-1 text-slate-500/90">Auto‑cycles</span>
                 </div>
               </div>
             <div data-reveal-item className="order-first lg:order-none min-w-0 flex justify-center lg:justify-end">
@@ -1460,7 +1460,7 @@ export default function Home() {
           <div data-reveal-item className="mt-8 flex justify-center">
             <Button
               as={RouteLink as any}
-              to="/company"
+              to="/about"
               variant="light"
               className="group h-[34px] px-5 rounded-full border border-slate-200 bg-white/50 hover:bg-white hover:border-slate-300 text-[13px] font-semibold text-slate-700 transition-all"
               endContent={<Icon icon="lucide:arrow-right" width={16} height={16} className="text-slate-400 group-hover:text-slate-600 group-hover:translate-x-0.5 transition-all" />}

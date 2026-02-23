@@ -8,6 +8,12 @@ type ClientLogo = {
   fallback: string;
   /** Optical normalization: scale down tall/heavy marks so they feel equal weight */
   scale?: number;
+  /** Vertical nudge in px so the logo content is visually centered (negative = up, positive = down) */
+  offsetY?: number;
+  /** Horizontal spacing adjustment (margin-left/right in px) to align with other logos */
+  spacingX?: number;
+  /** Override left margin only (px) to tighten/loosen gap before this logo */
+  marginLeft?: number;
 };
 
 function withBase(path: string) {
@@ -15,15 +21,16 @@ function withBase(path: string) {
   return `${base}${path.replace(/^\//, "")}`;
 }
 
-// Add logo files to public/assets/clients/ to use images; otherwise styled text is used
+// Logo files in public/assets/clients/ — credit unions first (alphabetical), then others.
+// Scales normalized to a tight band (0.88–1.12) so no logo dominates; spacing is uniform.
 const clients: ClientLogo[] = [
-  // Optical normalization: tuned so marks read with similar visual weight in a monochrome rail.
-  { name: "NerdWallet", src: withBase("assets/clients/nerdwallet.svg"), fallback: "NerdWallet", scale: 0.92 },
-  { name: "DailyPay", src: withBase("assets/clients/dailypay.svg"), fallback: "DailyPay", scale: 0.86 },
-  { name: "Service Credit Union", src: withBase("assets/clients/service-cu.svg"), fallback: "Service Credit Union", scale: 0.84 },
-  { name: "Kudos", src: withBase("assets/clients/kudos.svg"), fallback: "Kudos", scale: 0.86 },
-  { name: "Super.com", src: withBase("assets/clients/super.svg"), fallback: "Super.com", scale: 0.86 },
-  { name: "Chartway Credit Union", src: withBase("assets/clients/chartway.svg"), fallback: "Chartway Credit Union", scale: 0.80 },
+  { name: "Advia Credit Union", src: withBase("assets/clients/advia.png"), fallback: "Advia Credit Union", scale: 1.2 },
+  { name: "Chartway Credit Union", src: withBase("assets/clients/chartway-transparent.png"), fallback: "Chartway Credit Union", scale: 1.52, spacingX: -10 },
+  { name: "Service Credit Union", src: withBase("assets/clients/service-cu-transparent.png"), fallback: "Service Credit Union", scale: 1.06, offsetY: -5 },
+  { name: "NerdWallet", src: withBase("assets/clients/nerdwallet.svg"), fallback: "NerdWallet", scale: 0.9 },
+  { name: "DailyPay", src: withBase("assets/clients/dailypay-transparent.png"), fallback: "DailyPay", scale: 0.88 },
+  { name: "Kudos", src: withBase("assets/clients/kudos.png"), fallback: "Kudos", scale: 1.1 },
+  { name: "Super.com", src: withBase("assets/clients/super.png"), fallback: "Super.com", scale: 1 },
 ];
 
 function ClientLogoItem({ item }: { item: ClientLogo }) {
@@ -33,14 +40,19 @@ function ClientLogoItem({ item }: { item: ClientLogo }) {
 
   return (
     <div
-      className="relative inline-flex h-[52px] md:h-[60px] min-w-[185px] md:min-w-[220px] items-center justify-center px-9 opacity-90 hover:opacity-100 transition-all duration-300 shrink-0"
+      className="relative inline-flex h-[52px] md:h-[60px] w-[160px] md:w-[180px] flex-shrink-0 items-center justify-center opacity-95 hover:opacity-100 transition-opacity duration-300 [align-self:center]"
+      style={
+        item.spacingX != null || item.marginLeft != null
+          ? { marginLeft: item.marginLeft ?? item.spacingX, marginRight: item.spacingX }
+          : undefined
+      }
       aria-label={item.name}
       title={item.name}
     >
       {hasImage ? (
         <>
           <span
-            className={`absolute inset-0 grid place-items-center text-[13px] md:text-[14px] font-semibold tracking-[-0.02em] text-slate-600 whitespace-nowrap transition-opacity duration-300 ${
+            className={`absolute inset-0 grid place-items-center text-[13px] md:text-[14px] font-semibold tracking-[-0.02em] text-slate-500 whitespace-nowrap transition-opacity duration-300 ${
               loaded && !failed ? "opacity-0" : "opacity-100"
             }`}
           >
@@ -49,14 +61,19 @@ function ClientLogoItem({ item }: { item: ClientLogo }) {
           <img
             src={item.src}
             alt={item.name}
-            className={`absolute inset-0 m-auto h-9 md:h-11 w-[92%] object-contain object-center transition-all duration-300 ${
+            className={`absolute inset-0 m-auto h-[40px] w-[120px] md:h-[44px] md:w-[140px] object-contain object-center transition-opacity duration-300 ${
               loaded && !failed ? "opacity-100" : "opacity-0"
             }`}
             style={{
-              transform: `scale(${item.scale ?? 0.9})`,
-              // Full‑color enterprise marks (Atomic/Knot “enterprise reality” feel)
-              filter: "saturate(1.06) contrast(1.02) brightness(0.98)",
-              opacity: 0.98,
+              transform: (() => {
+                const parts: string[] = [];
+                if (item.scale != null) parts.push(`scale(${item.scale})`);
+                if (item.offsetY != null) parts.push(`translateY(${item.offsetY}px)`);
+                return parts.length ? parts.join(" ") : undefined;
+              })(),
+              transformOrigin: "center center",
+              filter: "saturate(1.02) contrast(1.02)",
+              opacity: 1,
             }}
             loading="lazy"
             decoding="async"
@@ -98,7 +115,7 @@ export function ClientLogoCarousel() {
     >
       <div className="mask-fade-x-wide">
         <div
-          className={`flex items-center ${start && isVisible ? "animate-client-marquee" : ""} will-change-transform`}
+          className={`flex items-center gap-6 md:gap-8 pl-6 md:pl-8 ${start && isVisible ? "animate-client-marquee" : ""} will-change-transform`}
           style={{ width: "max-content", animationPlayState: isVisible ? "running" : "paused" }}
         >
           {items.map((item, idx) => (

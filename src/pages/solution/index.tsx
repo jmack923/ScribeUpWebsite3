@@ -1,45 +1,23 @@
 import React from "react";
-import { Card, CardBody, Button } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { motion, useReducedMotion } from "framer-motion";
 import { FeatureItem } from "../../components/feature-item";
 import { Link as RouteLink } from "react-router-dom";
-import { PhoneShowcase, type PhoneShowcaseMode } from "../../components/phone-showcase";
-import { ShowcaseStepper, type ShowcaseStep } from "../../components/showcase-stepper";
 import { useDemoModal } from "../../components/demo-modal-context";
+
+const AVAILABLE_FEATURES = [
+  { title: "End-to-end subscription management", tag: "SDK or i-frame" },
+  { title: "1-click cancellation", tag: "API or in-product" },
+  { title: "1-click payment updater", tag: "API or in-product" },
+  { title: "Personalized cross-sell", tag: "API or in-product" },
+  { title: "Alerts & nudges", tag: "API or in-product" },
+  { title: "Transaction enrichment & recurrence detection", tag: "API or in-product" },
+] as const;
 
 export default function Solution() {
   const { openDemoModal } = useDemoModal();
-  const rm = useReducedMotion();
-  const steps: ShowcaseStep[] = [
-    {
-      kicker: "Step 01",
-      title: "Detect recurring bills",
-      detail: "Surface subscriptions + recurring payments from internal + external institutions.",
-      icon: "lucide:search-check",
-      tone: "blue",
-    },
-    {
-      kicker: "Step 02",
-      title: "Nudge before due dates",
-      detail: "Calendar sync + smart alerts that feel native inside the bank app.",
-      icon: "lucide:bell-ring",
-      tone: "indigo",
-    },
-    {
-      kicker: "Step 03",
-      title: "1‑click update & cancel",
-      detail: "Move payment‑on‑file and cancel unwanted merchants without redirects.",
-      icon: "lucide:mouse-pointer-click",
-      tone: "sky",
-    },
-  ];
-
-  const modeFor = (i: number): PhoneShowcaseMode => {
-    if (i === 1) return "Alerts";
-    if (i === 2) return "Actions";
-    return "Discover";
-  };
+  const [selectedFeatureIndex, setSelectedFeatureIndex] = React.useState(0);
+  const selectedFeature = AVAILABLE_FEATURES[selectedFeatureIndex];
 
   return (
     <div className="w-full page-shell">
@@ -52,17 +30,11 @@ export default function Solution() {
         <div className="container-page page-hero-pad relative">
           <div className="flex flex-col items-start max-w-4xl">
             <p className="section-kicker">Our solution</p>
-            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-slate-600">
-              <span className="spec-chip normal-case tracking-[0.02em] font-semibold text-slate-600">White‑labeled</span>
-              <span className="spec-chip normal-case tracking-[0.02em] font-semibold text-slate-600">SDK + iFrame</span>
-              <span className="spec-chip normal-case tracking-[0.02em] font-semibold text-slate-600">Outcome‑priced</span>
-            </div>
-            <h1 className="mt-5 page-title tracking-tight leading-[1.05]">
-              Enterprise-grade bill and subscription management, <span className="elite-em">natively</span> embedded in your app
+            <h1 className="mt-4 page-title tracking-tight leading-[1.05]">
+              Comprehensive Subscription Management. Your Way.
             </h1>
             <p className="mt-5 text-slate-700 max-w-2xl text-[16px] md:text-[17.5px] leading-relaxed">
-              Integrate quickly with our SDK or iFrame and ship a complete recurring bill experience from day one.
-              No redirects, no separate app, and no fragmented customer journey.
+              Every feature. One platform. Embedded seamlessly via SDK, iFrame, or API to match your architecture.
             </p>
             <div className="mt-8 flex flex-wrap gap-4 items-center">
               <Button
@@ -88,114 +60,92 @@ export default function Solution() {
         </div>
       </section>
 
+      {/* Why ScribeUp is Best-in-Class */}
+      <section data-reveal="section" className="relative py-[var(--section-padding)] bg-slate-50/80 overflow-hidden border-b border-slate-200/60">
+        <div className="container-page">
+          <h2 className="section-title tracking-tight text-2xl md:text-3xl max-w-2xl">
+            Why ScribeUp is Best-in-Class?
+          </h2>
+          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: "Pure-Play Focus",
+                desc: "We are 100% dedicated to subscription management. No competing priorities. Just best-in-class tooling.",
+              },
+              {
+                title: "Most Comprehensive Toolset",
+                desc: "From infrastructure to user experience, we provide the deepest and most complete subscription management capabilities available in one platform.",
+              },
+              {
+                title: "Flexible Integration",
+                desc: "SDK, iFrame or API-based features. White-labeled or customized. We fit into your architecture, not the other way around.",
+              },
+              {
+                title: "Enterprise-Grade Reliability",
+                desc: "Built for scale, compliance, and operational resilience from day one.",
+              },
+            ].map(({ title, desc }) => (
+              <div key={title} className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300">
+                <h3 className="text-lg font-bold tracking-tight text-[var(--ink)]">{title}</h3>
+                <p className="mt-3 text-sm text-slate-600 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section data-reveal="section" className="relative pt-[calc(var(--section-padding)*2.4)] pb-[var(--section-padding)] bg-white overflow-hidden">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 distance-grid opacity-[0.06] [mask-image:radial-gradient(60%_60%_at_50%_0%,black,transparent_72%)]" />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_55%_at_18%_12%,rgba(84,100,255,0.025),transparent_66%),radial-gradient(55%_55%_at_86%_18%,rgba(30,162,255,0.02),transparent_70%)]" />
         <div className="container-page relative z-10">
-          <div data-reveal-item className="max-w-3xl text-center mx-auto mb-16 md:mb-20 pt-8 md:pt-12">
-            <p className="section-kicker mx-auto inline-block">How it works</p>
-            <h2 className="mt-4 section-title tracking-tight text-3xl md:text-4xl">
-              A product-led flow that ships inside your app
+          <div data-reveal-item className="mb-12 pt-8 md:pt-12">
+            <p className="section-kicker">Available Features</p>
+            <h2 className="mt-4 section-title tracking-tight text-2xl md:text-3xl max-w-2xl">
+              Explore features by integration path
             </h2>
-            <p className="mt-5 text-slate-700 text-[16px] md:text-[18px] max-w-2xl mx-auto leading-relaxed">
-              The core experience is simple: detect recurring spend, stay ahead of due dates, and drive one‑click action.
-            </p>
           </div>
 
-          <div data-reveal-item className="mt-12 md:mt-16">
-            <ShowcaseStepper
-              steps={steps}
-              renderPreview={(_, idx) => (
-                <div className="space-y-8">
-                  <div className="flex justify-center">
-                    <div className="w-full max-w-[240px] md:max-w-[260px] bg-white rounded-[28px] border border-slate-200/60 shadow-[0_12px_40px_rgba(0,0,0,0.03)] overflow-hidden aspect-[9/18.5] relative ring-1 ring-slate-900/5">
-                      {/* Minimal UI snippets for each step (no phone frame, much smaller footprint) */}
-                      {idx === 0 && (
-                        <div className="p-5 h-full bg-white flex flex-col">
-                          <div className="flex items-center justify-between mb-5">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Scanning...</div>
-                            <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center">
-                              <Icon icon="lucide:search" className="text-primary" width={10} />
-                            </div>
-                          </div>
-                          <div className="space-y-2.5">
-                            {[
-                              { name: "Netflix", price: "$15.99", icon: "simple-icons:netflix", color: "text-red-600" },
-                              { name: "Spotify", price: "$9.99", icon: "simple-icons:spotify", color: "text-emerald-600" },
-                              { name: "Hulu", price: "$14.99", icon: "simple-icons:hulu", color: "text-emerald-500" },
-                            ].map((item) => (
-                              <div key={item.name} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50/40 border border-slate-100">
-                                <div className="flex items-center gap-2">
-                                  <Icon icon={item.icon} className={item.color} width={14} />
-                                  <span className="text-[12px] font-bold text-slate-700">{item.name}</span>
-                                </div>
-                                <span className="text-[10px] font-bold text-slate-400">{item.price}</span>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="mt-auto pb-4">
-                            <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                              <motion.div 
-                                className="h-full bg-primary" 
-                                initial={{ width: "0%" }}
-                                animate={{ width: "75%" }}
-                                transition={rm ? { duration: 0.2 } : { duration: 1.2, repeat: Infinity, repeatDelay: 1.5 }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      {idx === 1 && (
-                        <div className="p-5 h-full bg-white">
-                          <div className="flex items-center justify-between mb-5">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Upcoming</div>
-                            <div className="h-5 w-5 rounded-full bg-indigo-500/10 flex items-center justify-center">
-                              <Icon icon="lucide:bell" className="text-indigo-600" width={10} />
-                            </div>
-                          </div>
-                          <div className="space-y-3 mt-12">
-                            <motion.div 
-                              className="bg-indigo-50/40 rounded-xl p-4 border border-indigo-100 shadow-sm"
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                            >
-                              <div className="flex items-center gap-2 mb-2">
-                                <div className="h-6 w-6 rounded-lg bg-white flex items-center justify-center shadow-sm">
-                                  <Icon icon="simple-icons:netflix" className="text-red-600" width={12} />
-                                </div>
-                                <span className="text-[10px] font-bold text-indigo-900">Due in 2 days</span>
-                              </div>
-                              <p className="text-[10px] text-slate-500 leading-normal">
-                                Nudge: Avoid surprises.
-                              </p>
-                            </motion.div>
-                          </div>
-                        </div>
-                      )}
-                      {idx === 2 && (
-                        <div className="p-5 h-full bg-white flex flex-col items-center justify-center text-center">
-                          <div className="h-12 w-12 rounded-full bg-emerald-500/10 flex items-center justify-center mb-4 border border-emerald-500/20 shadow-sm">
-                            <Icon icon="lucide:check" className="text-emerald-600" width={24} />
-                          </div>
-                          <h5 className="text-[14px] font-bold text-slate-800 tracking-tight leading-tight">Action<br/>Complete</h5>
-                          <p className="text-[10px] text-slate-500 mt-2 leading-relaxed">Bill successfully moved<br/>to your card.</p>
-                          
-                          <div className="mt-8 w-full space-y-1.5">
-                            <div className="h-8 w-full rounded-lg bg-slate-50" />
-                            <div className="h-8 w-full rounded-lg bg-slate-50 opacity-50" />
-                          </div>
-                        </div>
-                      )}
+          <div data-reveal-item className="grid lg:grid-cols-[1fr_1.12fr] gap-8 lg:gap-12 items-start lg:py-8">
+            {/* Clickable feature list */}
+            <div className="space-y-2">
+              {AVAILABLE_FEATURES.map((feature, idx) => {
+                const isActive = idx === selectedFeatureIndex;
+                return (
+                  <button
+                    key={feature.title}
+                    type="button"
+                    onClick={() => setSelectedFeatureIndex(idx)}
+                    className={`w-full text-left rounded-2xl border px-5 py-4 transition-all duration-200 ${
+                      isActive
+                        ? "border-primary/40 bg-primary/5 shadow-sm"
+                        : "border-slate-200/60 bg-white/80 hover:bg-white hover:border-slate-200/80 hover:shadow-sm"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className={`font-semibold text-[15px] tracking-tight ${isActive ? "text-[var(--ink)]" : "text-slate-700"}`}>
+                        {feature.title}
+                      </span>
+                      <Icon icon="lucide:chevron-right" width={18} height={18} className={isActive ? "text-primary shrink-0" : "text-slate-400 shrink-0"} />
                     </div>
-                  </div>
-                  <div className="flex flex-wrap justify-center gap-3">
-                    <span className="spec-chip normal-case tracking-[0.02em] font-semibold text-slate-600 bg-white/80 border-slate-200/60 shadow-sm">No redirects</span>
-                    <span className="spec-chip normal-case tracking-[0.02em] font-semibold text-slate-600 bg-white/80 border-slate-200/60 shadow-sm">White-labeled</span>
-                    <span className="spec-chip normal-case tracking-[0.02em] font-semibold text-slate-600 bg-white/80 border-slate-200/60 shadow-sm">SDK + iFrame</span>
-                  </div>
+                    <span className="mt-2 inline-block text-[11px] font-medium text-slate-500 uppercase tracking-wider">
+                      {feature.tag}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Demo area for selected feature */}
+            <div className="rounded-2xl border border-slate-200/60 bg-slate-50/50 min-h-[320px] lg:min-h-[380px] p-6 md:p-8 flex flex-col items-center justify-center">
+              <div className="text-center max-w-md">
+                <p className="text-[11px] uppercase tracking-[0.14em] text-slate-500 font-bold mb-2">Demo</p>
+                <h3 className="text-lg font-bold tracking-tight text-[var(--ink)]">{selectedFeature.title}</h3>
+                <p className="mt-2 text-sm text-slate-600">{selectedFeature.tag}</p>
+                <div className="mt-6 rounded-xl border border-dashed border-slate-300/80 bg-white/60 py-12 px-6 text-slate-400 text-[13px]">
+                  Demo placeholder for this feature
                 </div>
-              )}
-            />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -260,43 +210,7 @@ export default function Solution() {
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 distance-grid opacity-[0.04] [mask-image:radial-gradient(60%_60%_at_50%_0%,black,transparent_76%)]" />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_55%_at_18%_16%,rgba(30,162,255,0.015),transparent_66%),radial-gradient(55%_55%_at_86%_18%,rgba(84,100,255,0.02),transparent_70%)]" />
         <div className="container-page relative z-10">
-          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-            <Card shadow="none" radius="lg" className="elite-card bg-white/50 backdrop-blur-sm border-white/40 shadow-sm">
-              <CardBody className="p-8 md:p-10">
-                <div className="flex items-start justify-between gap-5">
-                  <div>
-                    <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500 font-bold">API surface</div>
-                    <h3 className="mt-3 text-2xl font-bold tracking-tight text-[var(--ink)]">Built to ship in bank stacks</h3>
-                    <p className="mt-3 text-sm text-slate-700 leading-relaxed max-w-[66ch]">
-                      Tight, predictable surface area: auth, endpoints, errors, and events that work in regulated environments.
-                    </p>
-                  </div>
-                  <span className="spec-chip normal-case tracking-[0.02em] font-semibold text-slate-600 bg-white/80 border-slate-200/60 shadow-sm">SDK + iFrame</span>
-                </div>
-
-                <div className="mt-8 grid sm:grid-cols-2 gap-4">
-                  {[
-                    ["lucide:search-check", "Recurring bill detection", "Identify recurring spend across cards + accounts"],
-                    ["lucide:bell-ring", "Due‑date alerts", "Proactive notifications before charges hit"],
-                    ["lucide:arrow-left-right", "Payment updater", "Move payment‑on‑file to reinforce primacy"],
-                    ["lucide:ban", "1‑click cancellation", "Cancel unwanted subscriptions in seconds"],
-                  ].map(([ic, t, d]) => (
-                    <div key={t} className="rounded-2xl border border-slate-200/60 bg-white/85 px-5 py-5 hover:bg-white/95 transition-all duration-300 group hover:shadow-md">
-                      <div className="flex flex-col items-start gap-4">
-                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900/5 border border-slate-200/60 text-slate-700 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
-                          <Icon icon={ic} width={18} height={18} />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-[15px] font-bold text-[var(--ink)] leading-tight tracking-tight">{t}</div>
-                          <p className="mt-2 text-xs text-slate-600 leading-relaxed">{d}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardBody>
-            </Card>
-
+          <div className="max-w-3xl">
             <div className="rounded-[32px] p-[1px] bg-[linear-gradient(135deg,rgba(84,100,255,0.2),rgba(255,255,255,0.8),rgba(30,162,255,0.1))] shadow-[0_18px_54px_rgba(2,6,23,0.06)] h-full">
               <div className="elite-card rounded-[31px] p-8 md:p-10 bg-white/95 h-full flex flex-col">
                 <div className="flex items-start justify-between gap-5">

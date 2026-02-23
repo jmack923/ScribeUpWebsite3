@@ -39,9 +39,9 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold text-slate-900">Company</h4>
+          <h4 className="text-sm font-semibold text-slate-900">About</h4>
           <ul className="mt-3 space-y-2 text-sm text-slate-500">
-            <li><Link as={RouteLink} to="/company" className="hover:text-slate-900 transition-colors">About</Link></li>
+            <li><Link as={RouteLink} to="/about" className="hover:text-slate-900 transition-colors">About</Link></li>
             <li><a href="#" className="hover:text-slate-900 transition-colors">Press</a></li>
             <li><a href="#" className="hover:text-slate-900 transition-colors" aria-label="Privacy Policy">Privacy</a></li>
           </ul>
